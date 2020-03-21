@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      // draw on context in HTML which is 2d or 3d
+      const ctx = canvas.getContext("2d");
+      // resize canvas to be the size of the window
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      ctx.strokeStyle = "#424242"; // needs a color to start off with
+      ctx.lineJoin = "round"; // also needs to determine if a line is squared off or round around the corners
+      ctx.lineCap = "round";
+      ctx.lineWidth = 25;
+      ctx.globalCompositeOperation = "xor"; // blend mode
+
+      let isDrawing = false;
+      let direction = false;
+      let lastX = 0;
+      let lastY = 0;
+      let hue = 0;
+
+      function draw(event) {
+        if (!isDrawing) return;
+        console.log(event);
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [event.offsetX, event.offsetY];
+        hue++;
+
+        if (ctx.lineWidth >= 50 || ctx.lineWidth <= 1) {
+          direction = !direction;
+        }
+
+        if (direction) {
+          ctx.lineWidth++;
+        } else {
+          ctx.lineWidth--;
+        }
+      }
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mousedown", event => {
+        isDrawing = true;
+        [lastX, lastY] = [event.offsetX, event.offsetY];
+      });
+      canvas.addEventListener("mouseup", () => {
+        isDrawing = false;
+      });
+      canvas.addEventListener("mouseout", () => {
+        isDrawing = false;
+      });
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
+</html>
