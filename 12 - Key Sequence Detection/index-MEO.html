@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Key Detection</title>
+    <script
+      type="text/javascript"
+      src="https://www.cornify.com/js/cornify.js"
+    ></script>
+  </head>
+  <body>
+    <script>
+      const pressedArray = [];
+      const KonamiSequence = [
+        "ArrowUp",
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowLeft",
+        "ArrowRight",
+        "B",
+        "A"
+      ];
+      window.addEventListener("keyup", event => {
+        pressedArray.push(event.key);
+        pressedArray.splice(
+          -KonamiSequence.length - 1,
+          pressedArray.length - KonamiSequence.length
+        );
+        if (pressedArray.join("") === KonamiSequence.join("")) {
+          cornify_add();
+        }
+      });
+    </script>
+  </body>
+</html>
